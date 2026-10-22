@@ -6,133 +6,162 @@
 <title>Oakcraft MD Dashboard</title>
 <meta name="description" content="Managing Director master dashboard — live view of Oakcraft Sales CRM and every Oakcraft module.">
 <link rel="preconnect" href="https://script.google.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   color-scheme:light;
-  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
-  --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,.10);
+  --page:#f4f6f9; --surface:#ffffff; --ink:#0b1220; --ink2:#4b5563; --muted:#8a94a3;
+  --grid:#e5e8ee; --axis:#c3c8d2; --ring:rgba(13,27,54,.08);
+  --brand:#132a4a; --brand-ink:#ffffff; --accent:#2a78d6;
   --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
   --seq250:#86b6ef; --seq300:#6da7ec; --seq350:#5598e7; --seq400:#3987e5; --seq450:#2a78d6; --seq500:#256abf; --seq550:#1c5cab; --seq600:#184f95;
   --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
   --up:#006300; --down:#d03b3b;
-  --tint1:rgba(42,120,214,.10); --tint2:rgba(235,104,52,.10); --tint3:rgba(27,175,122,.10);
-  --tint4:rgba(208,59,59,.08); --tint5:rgba(250,178,25,.12); --tintn:rgba(11,11,11,.04);
+  --tint1:#eaf2fc; --tint2:#fdeee7; --tint3:#e7f7f1; --tint4:#fdecec; --tint5:#fdf4df; --tintn:#f1f3f7;
+  --shadow:0 1px 2px rgba(13,27,54,.05),0 6px 20px rgba(13,27,54,.06);
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --page:#0d0d0d; --surface:#1a1a19; --ink:#f0efec; --ink2:#c3c2b7; --muted:#898781;
-  --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,.10);
+  --page:#0d0f13; --surface:#171a21; --ink:#eef0f4; --ink2:#b9c0cc; --muted:#8a94a3;
+  --grid:#272b34; --axis:#343945; --ring:rgba(255,255,255,.08);
+  --brand:#10131a; --brand-ink:#eef0f4; --accent:#3987e5;
   --s1:#3987e5; --s2:#d95926; --s3:#199e70;
-  --up:#0ca30c; --down:#d03b3b;
-  --tint1:rgba(57,135,229,.14); --tint2:rgba(217,89,38,.14); --tint3:rgba(25,158,112,.14);
-  --tint4:rgba(208,59,59,.14); --tint5:rgba(250,178,25,.12); --tintn:rgba(255,255,255,.05);
+  --up:#0ca30c; --down:#e66767;
+  --tint1:#1b2535; --tint2:#2d2019; --tint3:#15271f; --tint4:#2d1a1a; --tint5:#2c2614; --tintn:#1e222b;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.35);
 }
 @media (prefers-color-scheme: dark){
   :root:where(:not([data-theme="light"])){
     color-scheme:dark;
-    --page:#0d0d0d; --surface:#1a1a19; --ink:#f0efec; --ink2:#c3c2b7; --muted:#898781;
-    --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,.10);
+    --page:#0d0f13; --surface:#171a21; --ink:#eef0f4; --ink2:#b9c0cc; --muted:#8a94a3;
+    --grid:#272b34; --axis:#343945; --ring:rgba(255,255,255,.08);
+    --brand:#10131a; --brand-ink:#eef0f4; --accent:#3987e5;
     --s1:#3987e5; --s2:#d95926; --s3:#199e70;
-    --up:#0ca30c; --down:#d03b3b;
-    --tint1:rgba(57,135,229,.14); --tint2:rgba(217,89,38,.14); --tint3:rgba(25,158,112,.14);
-    --tint4:rgba(208,59,59,.14); --tint5:rgba(250,178,25,.12); --tintn:rgba(255,255,255,.05);
+    --up:#0ca30c; --down:#e66767;
+    --tint1:#1b2535; --tint2:#2d2019; --tint3:#15271f; --tint4:#2d1a1a; --tint5:#2c2614; --tintn:#1e222b;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.35);
   }
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--page);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:48px}
-a{color:var(--s1);text-decoration:none}
+body{background:var(--page);color:var(--ink);font:13.5px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:56px;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-select,input{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--grid);border-radius:8px;padding:6px 10px}
-.wrap{max-width:1360px;margin:0 auto;padding:0 16px}
+select,input{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--grid);border-radius:8px;padding:7px 10px;outline:none}
+select:focus,input:focus{border-color:var(--accent)}
+.wrap{max-width:1380px;margin:0 auto;padding:0 20px}
+svg.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
 
-/* ---------- header ---------- */
-header{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--grid)}
-.hd{display:flex;align-items:center;gap:12px;padding:10px 0;flex-wrap:wrap}
-.logo{width:34px;height:34px;border-radius:9px;background:var(--s1);display:grid;place-items:center;color:#fff;font-weight:700;font-size:15px;flex:none}
-.hd h1{font-size:17px;font-weight:700}
-.hd .sub{font-size:12px;color:var(--muted)}
+/* ---------- app bar ---------- */
+header{position:sticky;top:0;z-index:50;background:var(--brand);color:var(--brand-ink);box-shadow:0 1px 0 rgba(255,255,255,.06),0 2px 10px rgba(0,0,0,.18)}
+.hd{display:flex;align-items:center;gap:14px;padding:12px 0;flex-wrap:wrap}
+.logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#3987e5,#1c5cab);display:grid;place-items:center;color:#fff;font-weight:800;font-size:14px;letter-spacing:.02em;flex:none}
+.hd h1{font-size:16px;font-weight:700;letter-spacing:-.01em}
+.hd .sub{font-size:11.5px;opacity:.65;margin-top:1px}
 .hd .sp{flex:1}
-.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--grid);border-radius:999px;padding:5px 12px;font-size:12.5px;color:var(--ink2);background:var(--surface)}
-.pill:hover{background:var(--tintn)}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--good);flex:none}
-.dot.off{background:var(--crit)} .dot.demo{background:var(--warn)}
+.hbtn{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.18);border-radius:9px;padding:7px 13px;font-size:12.5px;font-weight:500;color:var(--brand-ink);background:rgba(255,255,255,.06)}
+.hbtn:hover{background:rgba(255,255,255,.12)}
+.statuspill{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:7px 14px;font-size:12px;font-weight:600;background:rgba(255,255,255,.1);color:var(--brand-ink)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--good);flex:none}
+.dot.off{background:var(--crit)} .dot.warn{background:var(--warn)}
+
+/* ---------- login banner ---------- */
+.banner{display:none;margin-top:16px;background:var(--tint5);border:1px solid rgba(250,178,25,.35);border-radius:12px;padding:13px 16px;font-size:13px;color:var(--ink2);align-items:center;gap:12px;flex-wrap:wrap}
+.banner.show{display:flex}
+.banner b{color:var(--ink)}
+.banner .cta{margin-left:auto;background:var(--accent);color:#fff;border-radius:8px;padding:7px 14px;font-weight:600;font-size:12.5px}
 
 /* ---------- filter bar ---------- */
-.filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:14px 0 4px}
-.filters label{font-size:11.5px;color:var(--muted);display:block;margin-bottom:2px}
-.fcell select{min-width:110px}
+.filters{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;padding:18px 0 4px}
+.filters label{font-size:10.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+.fcell select{min-width:120px}
+.pulse{margin-left:auto;font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--grid);border-radius:999px;padding:7px 14px}
 
 /* ---------- KPI tiles ---------- */
-.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:12px;margin-top:12px}
-.tile{background:var(--surface);border:1px solid var(--ring);border-radius:14px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;cursor:default}
-.tile .ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:17px;flex:none}
-.tile .lbl{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);font-weight:600}
-.tile .val{font-size:25px;font-weight:700;line-height:1.15;margin-top:2px}
-.tile .sub{font-size:12px;color:var(--muted);margin-top:2px}
-.delta{font-size:12.5px;font-weight:600}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(222px,1fr));gap:14px;margin-top:14px}
+.tile{background:var(--surface);border:1px solid var(--ring);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+.tile .top{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.tile .chip{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;flex:none}
+.tile .chip svg.ic{width:16px;height:16px}
+.tile .lbl{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600;line-height:1.3}
+.tile .val{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.tile .sub{font-size:12px;color:var(--muted);margin-top:4px}
+.delta{font-size:12px;font-weight:600;margin-left:6px}
 .delta.up{color:var(--up)} .delta.down{color:var(--down)}
 
 /* ---------- sections / cards ---------- */
-h2.sec{font-size:15px;font-weight:700;margin:26px 0 10px;display:flex;align-items:center;gap:8px}
-h2.sec .n{font-size:12px;color:var(--muted);font-weight:500}
-.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:12px}
-.card{background:var(--surface);border:1px solid var(--ring);border-radius:14px;padding:16px}
-.card h3{font-size:13px;font-weight:700;margin-bottom:2px}
-.card .hint{font-size:11.5px;color:var(--muted);margin-bottom:10px}
-.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin-bottom:8px}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+h2.sec{font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:32px 0 12px;display:flex;align-items:center;gap:10px}
+h2.sec .n{font-weight:500;text-transform:none;letter-spacing:0;font-size:12px}
+h2.sec:after{content:"";flex:1;height:1px;background:var(--grid)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--ring);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.card h3{font-size:13.5px;font-weight:700;letter-spacing:-.01em}
+.card .hint{font-size:12px;color:var(--muted);margin:2px 0 12px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin-bottom:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 
 /* ---------- charts ---------- */
 .ch{position:relative}
 .ch svg{display:block;width:100%;height:auto}
-.ch svg text{font:11px system-ui,-apple-system,"Segoe UI",sans-serif;fill:var(--muted)}
+.ch svg text{font:11px Inter,system-ui,sans-serif;fill:var(--muted)}
 .ch svg .dl{font-size:11px;font-weight:600;fill:var(--ink2)}
 .ch svg .gl{stroke:var(--grid);stroke-width:1}
 .ch svg .ax{stroke:var(--axis);stroke-width:1}
-.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--grid);border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.14);padding:8px 11px;font-size:12px;z-index:40;display:none;min-width:130px}
+.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--grid);border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.18);padding:9px 12px;font-size:12px;z-index:40;display:none;min-width:140px}
 .tip b{font-size:12.5px}
-.tip .row{display:flex;justify-content:space-between;gap:14px;color:var(--ink2);margin-top:2px}
-.hbar{display:grid;grid-template-columns:130px 1fr 86px;gap:8px;align-items:center;padding:5px 0;border-radius:6px}
+.tip .row{display:flex;justify-content:space-between;gap:16px;color:var(--ink2);margin-top:3px}
+.hbar{display:grid;grid-template-columns:132px 1fr 88px;gap:10px;align-items:center;padding:6px 4px;border-radius:7px}
 .hbar:hover{background:var(--tintn)}
 .hbar .nm{font-size:12.5px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hbar .tr{height:14px;background:var(--tintn);border-radius:4px;overflow:hidden}
+.hbar .tr{height:13px;background:var(--tintn);border-radius:4px;overflow:hidden}
 .hbar .fl{height:100%;border-radius:0 4px 4px 0}
 .hbar .vv{font-size:12px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink2)}
 
 /* ---------- table ---------- */
-.tblwrap{overflow:auto;border:1px solid var(--ring);border-radius:14px;background:var(--surface)}
-table{border-collapse:collapse;width:100%;min-width:900px;font-size:12.8px}
-th{background:var(--tint1);color:var(--ink);font-weight:700;text-align:left;padding:9px 12px;white-space:nowrap;border-bottom:1px solid var(--grid);position:sticky;top:0}
-td{padding:8px 12px;border-bottom:1px solid var(--grid);white-space:nowrap;font-variant-numeric:tabular-nums}
+.tblwrap{overflow:auto;border:1px solid var(--ring);border-radius:14px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:920px;font-size:12.8px}
+th{background:var(--tintn);color:var(--ink2);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;text-align:left;padding:11px 14px;white-space:nowrap;border-bottom:1px solid var(--grid);position:sticky;top:0}
+td{padding:10px 14px;border-bottom:1px solid var(--grid);white-space:nowrap;font-variant-numeric:tabular-nums}
 tr:last-child td{border-bottom:0}
 tbody tr:hover{background:var(--tintn)}
-tr.total td{font-weight:700;background:var(--tintn)}
+tr.total td{font-weight:700;background:var(--tintn);border-top:2px solid var(--axis)}
 .num{text-align:right}
-.badge{display:inline-block;font-size:11px;font-weight:600;border-radius:999px;padding:2px 9px}
+
+/* ---------- alerts ---------- */
+.alert{background:var(--surface);border:1px solid var(--ring);border-left:3px solid var(--warn);border-radius:12px;padding:15px 17px;box-shadow:var(--shadow)}
+.alert h3{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+.alert p{font-size:12.6px;color:var(--ink2);margin-top:6px}
 
 /* ---------- modules ---------- */
-.mods{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
-.mod{background:var(--surface);border:1px solid var(--ring);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
-.mod .top{display:flex;gap:10px;align-items:center}
-.mod .mi{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-size:16px;flex:none}
-.mod b{font-size:13px}
-.mod .cat{font-size:11px;color:var(--muted)}
-.mod .st{font-size:12px;color:var(--ink2)}
+.mods{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:14px}
+.mod{background:var(--surface);border:1px solid var(--ring);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow)}
+.mod .top{display:flex;gap:11px;align-items:center}
+.mod .mi{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex:none}
+.mod .mi svg.ic{width:17px;height:17px}
+.mod b{font-size:13.5px;letter-spacing:-.01em}
+.mod .cat{font-size:11px;color:var(--muted);font-weight:500}
+.mod .st{font-size:12px;color:var(--ink2);min-height:18px}
+.mod .st.dim{color:var(--muted)}
 .mod .acts{display:flex;gap:8px;margin-top:auto}
-.mod .acts .pill{padding:4px 11px;font-size:12px}
+.mbtn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--grid);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:500;color:var(--ink2)}
+.mbtn:hover{border-color:var(--accent);color:var(--accent)}
+.mbtn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.mbtn.pri:hover{opacity:.9;color:#fff}
 
-/* ---------- modal ---------- */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;place-items:center;z-index:100;padding:16px}
+/* ---------- modal / toast ---------- */
+.modal{position:fixed;inset:0;background:rgba(9,14,24,.5);display:none;place-items:center;z-index:100;padding:16px}
 .modal.open{display:grid}
-.mbox{background:var(--surface);border-radius:16px;max-width:560px;width:100%;max-height:85vh;overflow:auto;padding:20px}
-.mbox h3{margin-bottom:4px}
-.mbox p{font-size:12.5px;color:var(--ink2);margin-bottom:12px}
-.mbox label{font-size:12px;color:var(--ink2);display:block;margin:10px 0 4px}
+.mbox{background:var(--surface);border-radius:16px;max-width:580px;width:100%;max-height:85vh;overflow:auto;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.mbox h3{font-size:15px;margin-bottom:4px}
+.mbox p{font-size:12.5px;color:var(--ink2);margin-bottom:14px}
+.mbox label{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);display:block;margin:12px 0 5px}
 .mbox input{width:100%}
-.mbox .acts{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
-.btnp{background:var(--s1);color:#fff;border-radius:9px;padding:7px 16px;font-weight:600}
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--page);border-radius:10px;padding:9px 18px;font-size:13px;z-index:120;display:none}
-@media (max-width:640px){ .hbar{grid-template-columns:96px 1fr 70px} table{min-width:760px} }
+.mbox .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+.btnp{background:var(--accent);color:#fff;border-radius:9px;padding:8px 18px;font-weight:600;font-size:13px}
+.btng{border:1px solid var(--grid);border-radius:9px;padding:8px 18px;font-size:13px;color:var(--ink2)}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:var(--page);border-radius:10px;padding:10px 20px;font-size:13px;font-weight:500;z-index:120;display:none;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+@media (max-width:640px){ .hbar{grid-template-columns:98px 1fr 72px} table{min-width:780px} .hd h1{font-size:14px} }
 </style>
 </head>
 <body>
@@ -144,19 +173,25 @@ tr.total td{font-weight:700;background:var(--tintn)}
     <div class="sub">Oakcraft · <span id="hdDate"></span></div>
   </div>
   <div class="sp"></div>
-  <span class="pill" id="syncPill" title="Data source status"><span class="dot" id="syncDot"></span><span id="syncTxt">Connecting…</span></span>
-  <button class="pill" id="btnRefresh" title="Refresh data">⟳ Refresh</button>
-  <button class="pill" id="btnTheme" title="Light / dark">◐ Theme</button>
-  <button class="pill" id="btnSettings" title="Data connections">⚙ Settings</button>
+  <span class="statuspill" id="syncPill" title="Data source status"><span class="dot warn" id="syncDot"></span><span id="syncTxt">Connecting…</span></span>
+  <button class="hbtn" id="btnRefresh"><svg class="ic" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.3M21 3v6h-6"/></svg>Refresh</button>
+  <button class="hbtn" id="btnTheme"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>Theme</button>
+  <button class="hbtn" id="btnSettings"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.5 1h.2a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</button>
 </div></header>
 
 <div class="wrap">
+  <div class="banner" id="loginBanner">
+    <b>Sales CRM data nahi mil raha.</b>
+    <span>Isi browser me ek baar CRM me login karein — dashboard apne aap uska live data padh lega.</span>
+    <a class="cta" href="https://weboakcraft.github.io/Oakcraft_Sales_CRM/" target="_blank" rel="noopener">Open Sales CRM →</a>
+  </div>
+
   <div class="filters">
     <div class="fcell"><label>Year</label><select id="fYear"></select></div>
     <div class="fcell"><label>Month</label><select id="fMonth"><option value="">All months</option></select></div>
     <div class="fcell"><label>Salesperson</label><select id="fSales"><option value="">All salespersons</option></select></div>
     <div class="fcell"><label>Source</label><select id="fSource"><option value="">All sources</option></select></div>
-    <div class="fcell" style="margin-left:auto;align-self:end"><span class="pill" id="pulse"></span></div>
+    <span class="pulse" id="pulse"></span>
   </div>
 
   <div class="kpis" id="kpis"></div>
@@ -192,7 +227,7 @@ tr.total td{font-weight:700;background:var(--tintn)}
   </div>
 
   <h2 class="sec">B2B MIS Report <span class="n">source-wise performance · respects filters</span>
-    <span style="flex:1"></span><button class="pill" id="btnCsv">⬇ CSV</button></h2>
+    <button class="mbtn" id="btnCsv" style="margin-left:auto"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Export CSV</button></h2>
   <div class="tblwrap"><table id="misTbl">
     <thead><tr>
       <th>#</th><th>Source / Type</th>
@@ -205,15 +240,15 @@ tr.total td{font-weight:700;background:var(--tintn)}
   <h2 class="sec">Attention Needed <span class="n">items the MD should chase today</span></h2>
   <div class="grid2" id="alerts"></div>
 
-  <h2 class="sec">Oakcraft Modules <span class="n">every app, one place · connect any app's backend in Settings to see live counts</span></h2>
+  <h2 class="sec">Oakcraft Modules <span class="n">live record counts from each app's backend</span></h2>
   <div class="mods" id="mods"></div>
 </div>
 
 <div class="modal" id="modal"><div class="mbox">
   <h3>Data connections</h3>
-  <p>Sales CRM endpoint is built-in. Add any other module's Apps Script <code>/exec</code> URL (same <code>?action=getAll</code> pattern) to show its live record counts on the module card. Saved in this browser only.</p>
+  <p>Sales CRM built-in hai. Har module ka Apps Script <code>/exec</code> URL pehle se wired hai — yahan aap kisi bhi module ka URL badal sakte hain (naya deployment hone par). Khali chhodne par default URL use hoga. Ye settings sirf is browser me save hoti hain.</p>
   <div id="connList"></div>
-  <div class="acts"><button class="pill" id="mClose">Close</button><button class="btnp" id="mSave">Save &amp; reload</button></div>
+  <div class="acts"><button class="btng" id="mClose">Close</button><button class="btnp" id="mSave">Save &amp; reload</button></div>
 </div></div>
 <div class="toast" id="toast"></div>
 
@@ -221,38 +256,75 @@ tr.total td{font-weight:700;background:var(--tintn)}
 "use strict";
 /* ================= config ================= */
 var CRM_URL = "https://script.google.com/macros/s/AKfycbwYDLF2Mh8SCuMTLJTesuIunJ03tuAYFW7x2etsaKUJT3Dua29IsFzU-4E5eiDAX6o1/exec";
+var GAS = "https://script.google.com/macros/s/";
 var MODULES = [
-  {id:"crm",   name:"Sales CRM",            cat:"Sales",       repo:"Oakcraft_Sales_CRM",      emoji:"📈", tint:"var(--tint1)", builtin:true},
-  {id:"suite", name:"Oakcraft Suite",       cat:"Company",     repo:"Oakcraft_Suite",          emoji:"🏢", tint:"var(--tint2)"},
-  {id:"crr",   name:"CRR Tracker",          cat:"Sales",       repo:"CRR_TRACKER",             emoji:"🎯", tint:"var(--tint3)"},
-  {id:"media", name:"Media Application",    cat:"Marketing",   repo:"Media_Application",       emoji:"🎬", tint:"var(--tint1)"},
-  {id:"compl", name:"Complaints Tracker",   cat:"Service",     repo:"Complaints_tracker",      emoji:"🛠️", tint:"var(--tint4)"},
-  {id:"att",   name:"Attendance",           cat:"HR",          repo:"oakcraft_attendance",     emoji:"🗓️", tint:"var(--tint3)"},
-  {id:"ecom",  name:"Ecommerce Reports",    cat:"Ecommerce",   repo:"Ecommerce_Reports",       emoji:"🛒", tint:"var(--tint2)"},
-  {id:"kit",   name:"Full Kitting",         cat:"Production",  repo:"fullkitting_software",    emoji:"📦", tint:"var(--tint5)"},
-  {id:"acc",   name:"Account Analytics",    cat:"Finance",     repo:"Acc_Analystic",           emoji:"💰", tint:"var(--tint3)"},
-  {id:"ret",   name:"Return Management",    cat:"Ecommerce",   repo:"oc_return_management",    emoji:"↩️", tint:"var(--tint4)"},
-  {id:"enqr",  name:"Enquiries Reconciliation",cat:"Sales",    repo:"Enquiries_reconciliation",emoji:"🔍", tint:"var(--tint1)"},
-  {id:"daily", name:"Daily Working",        cat:"Operations",  repo:"Daily_Working",           emoji:"📝", tint:"var(--tintn)"},
-  {id:"gp",    name:"Sales GP Calculator",  cat:"Finance",     repo:"sales_gp_calcularot",     emoji:"🧮", tint:"var(--tint3)"},
-  {id:"pkgt",  name:"Packaging Team",       cat:"Production",  repo:"packaging_team",          emoji:"🎁", tint:"var(--tint5)"},
-  {id:"stock", name:"New Stock Software",   cat:"Inventory",   repo:"New_Stock_Software",      emoji:"🏷️", tint:"var(--tint2)"},
-  {id:"prof",  name:"Oakluxe Proforma",     cat:"Finance",     repo:"Oakluxe_Proforma",        emoji:"🧾", tint:"var(--tintn)"},
-  {id:"runo",  name:"RUNO Analytics",       cat:"Sales",       repo:"RUNO_ANALSTICS",          emoji:"📞", tint:"var(--tint1)"},
-  {id:"fk",    name:"Flipkart Dashboard",   cat:"Ecommerce",   repo:"flipkart_dashboard",      emoji:"🛍️", tint:"var(--tint2)"},
-  {id:"help",  name:"Help Ticket",          cat:"Service",     repo:"Help_Ticket",             emoji:"🎫", tint:"var(--tint4)"},
-  {id:"exp",   name:"Expense Dashboard",    cat:"Finance",     repo:"Expense_Dashboard",       emoji:"💸", tint:"var(--tint3)"},
-  {id:"raw",   name:"Raw Material Dashboard",cat:"Inventory",  repo:"Raw_Material_Dashboard",  emoji:"🪵", tint:"var(--tint5)"},
-  {id:"pkgi",  name:"Packaging Inventory",  cat:"Inventory",   repo:"Packaging_Inventory",     emoji:"📦", tint:"var(--tint5)"},
-  {id:"prodi", name:"Production Inventory", cat:"Production",  repo:"Production_inventory",    emoji:"🏭", tint:"var(--tint2)"}
+  {id:"crm",   name:"Sales CRM",              cat:"Sales",      repo:"Oakcraft_Sales_CRM",      icon:"chart",  tint:"var(--tint1)", color:"var(--s1)", builtin:true},
+  {id:"suite", name:"Oakcraft Suite",         cat:"Company",    repo:"Oakcraft_Suite",          icon:"grid",   tint:"var(--tint2)", color:"var(--s2)", url:GAS+"AKfycbyLvZxaDlHGXQ4Cg2fBVe4pPibBgVKnbsa5rCCmwZOKD5HrIk8rJ2Ig9640DzYa2NocxA/exec"},
+  {id:"crr",   name:"CRR Tracker",            cat:"Sales",      repo:"CRR_TRACKER",             icon:"target", tint:"var(--tint3)", color:"var(--s3)", url:GAS+"AKfycbx4ZujmuuXZ30RG52yAmuSFLyX0f_LwmRGZZtIFOm9M3RSUKSDAwHkzSXDKjeC4RTKbPQ/exec"},
+  {id:"media", name:"Media Application",      cat:"Marketing",  repo:"Media_Application",       icon:"film",   tint:"var(--tint1)", color:"var(--s1)"},
+  {id:"compl", name:"Complaints Tracker",     cat:"Service",    repo:"Complaints_tracker",      icon:"tool",   tint:"var(--tint4)", color:"var(--crit)", url:GAS+"AKfycbwQW_kxo3mUJmYW6f0nxrlLXsWkndIbDfewWzFOXoF_y28Ihc-e7OkISV2pJvrRMBEc/exec"},
+  {id:"att",   name:"Attendance",             cat:"HR",         repo:"oakcraft_attendance",     icon:"cal",    tint:"var(--tint3)", color:"var(--s3)", url:GAS+"AKfycby13SZVtQyAAykvsFnoKSgvSg3ozQeIGRBQpAJny7D_DhPLKgDU0L57jzHSY5VmfigM/exec"},
+  {id:"ecom",  name:"Ecommerce Reports",      cat:"Ecommerce",  repo:"Ecommerce_Reports",       icon:"cart",   tint:"var(--tint2)", color:"var(--s2)", url:GAS+"AKfycbzamJbird_KELvRApFCOGknm40D62krh-j0TBT7gc8GIfwNlIhBNCnLkuMC4pahfmg/exec"},
+  {id:"kit",   name:"Full Kitting",           cat:"Production", repo:"fullkitting_software",    icon:"box",    tint:"var(--tint5)", color:"var(--warn)", url:GAS+"AKfycbyUlW3TGaFK4oTjmceZ1QTcqdlNKW4R5d0XGvYNbtUiFPM-XloAvu8srbwupl4y2XK2Bg/exec"},
+  {id:"acc",   name:"Account Analytics",      cat:"Finance",    repo:"Acc_Analystic",           icon:"wallet", tint:"var(--tint3)", color:"var(--s3)", url:GAS+"AKfycbzTD5ED7I2nlxTL-_A1EI0mbM_1bYBSdJ9PfcVKGprXBeNbI6riz-9UYYQUhn3oY417oQ/exec"},
+  {id:"ret",   name:"Return Management",      cat:"Ecommerce",  repo:"oc_return_management",    icon:"rotate", tint:"var(--tint4)", color:"var(--crit)", url:GAS+"AKfycbxM41CRG_7KZDzFfhVkrpRxw6AkH9Gh154KdVb51fG1p72A2342h4tzrzhRx7ObkMra9g/exec"},
+  {id:"enqr",  name:"Enquiries Reconciliation",cat:"Sales",     repo:"Enquiries_reconciliation",icon:"search", tint:"var(--tint1)", color:"var(--s1)"},
+  {id:"daily", name:"Daily Working",          cat:"Operations", repo:"Daily_Working",           icon:"file",   tint:"var(--tintn)", color:"var(--ink2)", url:GAS+"AKfycbwMFL69rEQH6lvs6Y65hgu10BH9bYA8yBNL3W9QMKLoetLAnGyrY4akTOw6pQp1Qvj3/exec"},
+  {id:"gp",    name:"Sales GP Calculator",    cat:"Finance",    repo:"sales_gp_calcularot",     icon:"calc",   tint:"var(--tint3)", color:"var(--s3)"},
+  {id:"pkgt",  name:"Packaging Team",         cat:"Production", repo:"packaging_team",          icon:"box",    tint:"var(--tint5)", color:"var(--warn)", url:GAS+"AKfycbyOI1Z_3IX-90TDlXCdLuTxlPB_jg8tGculje5fgm2AJ8zME1xB3LVfxA_UZvGfC-p4Gw/exec"},
+  {id:"stock", name:"New Stock Software",     cat:"Inventory",  repo:"New_Stock_Software",      icon:"layers", tint:"var(--tint2)", color:"var(--s2)"},
+  {id:"prof",  name:"Oakluxe Proforma",       cat:"Finance",    repo:"Oakluxe_Proforma",        icon:"file",   tint:"var(--tintn)", color:"var(--ink2)", url:GAS+"AKfycbxj5o74f79rKtrcEovS214Op8-r9HYU0m9gBfN2IJyOWRUI0_Tv-_nN4H6nxKD9eRWwJw/exec"},
+  {id:"runo",  name:"RUNO Analytics",         cat:"Sales",      repo:"RUNO_ANALSTICS",          icon:"phone",  tint:"var(--tint1)", color:"var(--s1)"},
+  {id:"fk",    name:"Flipkart Dashboard",     cat:"Ecommerce",  repo:"flipkart_dashboard",      icon:"cart",   tint:"var(--tint2)", color:"var(--s2)", url:GAS+"AKfycbxoMtKraEUMmGhfFCiyJrvisAfGry6i8MyF9gUAGoBqOKd2RHy4UtEv5AJCjth5aKUK3A/exec"},
+  {id:"help",  name:"Help Ticket",            cat:"Service",    repo:"Help_Ticket",             icon:"ticket", tint:"var(--tint4)", color:"var(--crit)"},
+  {id:"exp",   name:"Expense Dashboard",      cat:"Finance",    repo:"Expense_Dashboard",       icon:"wallet", tint:"var(--tint3)", color:"var(--s3)", url:GAS+"AKfycbybNse6N0xVrdzQ8IOhQqqvEYZVNVqYs5BPNi9uD91QaQsrsGEdcRvHlna_0Gyz1EQIZA/exec"},
+  {id:"raw",   name:"Raw Material Dashboard", cat:"Inventory",  repo:"Raw_Material_Dashboard",  icon:"layers", tint:"var(--tint5)", color:"var(--warn)", url:GAS+"AKfycbylKylnvtYGNXxJEu1hnqXokb7oxflfit1PZX-CtJdCNHKekWnqc9wsXSX9gig1nb4/exec"},
+  {id:"pkgi",  name:"Packaging Inventory",    cat:"Inventory",  repo:"Packaging_Inventory",     icon:"box",    tint:"var(--tint5)", color:"var(--warn)", url:GAS+"AKfycbx1bCv_vlbKOFNIWnPdJouiv9C749BawmVZXMCeGPUxJcK153_9hit8ms7K14T3EN68Tw/exec"},
+  {id:"prodi", name:"Production Inventory",   cat:"Production", repo:"Production_inventory",    icon:"factory",tint:"var(--tint2)", color:"var(--s2)", url:GAS+"AKfycbzJNS39ak_jX55zyxc1FkBefxIq3j4BtTXB9KJcoyTx1UccPyHuvRt5O2np5Dzc-iX0/exec"}
 ];
 var MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 var STAGES = ["New","Contacted","Qualified","Quoted","Won","Lost"];
 var OSTATS = ["Confirmed","In Production","Ready","Dispatched","Delivered","Cancelled"];
+var COLLS = ["enquiries","quotations","orders","dispatch","customers","products","users","metaLeads","indiamartLeads"];
+
+/* ================= icons ================= */
+var IC = {
+  chart:'<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>',
+  layers:'<path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 12l10 5 10-5"/><path d="M2 17l10 5 10-5"/>',
+  rupee:'<path d="M6 3h12M6 8h12M14.5 21 7 13h3a5 5 0 0 0 0-10"/>',
+  trophy:'<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a2 2 0 0 0 2 4h1M17 6h3a2 2 0 0 1-2 4h-1"/>',
+  x:'<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/>',
+  file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/>',
+  clip:'<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M9 12h6M9 16h4"/>',
+  phone:'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2.2z"/>',
+  mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
+  users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
+  slash:'<circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/>',
+  factory:'<path d="M2 20h20M4 20V9l6 4V9l6 4V4h4v16"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>',
+  folder:'<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',
+  grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+  truck:'<path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>',
+  cart:'<circle cx="9" cy="21" r="1.6"/><circle cx="19" cy="21" r="1.6"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>',
+  wallet:'<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/>',
+  calc:'<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 11h0M12 11h0M16 11h0M8 15h0M12 15h0M16 15h0M8 19h8"/>',
+  box:'<path d="M21 8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.7z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/>',
+  ticket:'<path d="M2 9a3 3 0 0 1 0 6v3a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3a3 3 0 0 1 0-6V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M13 5v2m0 10v2m0-8v2"/>',
+  cal:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  film:'<rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 7h5M17 17h5"/>',
+  tool:'<path d="M14.7 6.3a4.6 4.6 0 0 0 6 6L17 16l-5-5 3.7-4.7z"/><path d="m16 16-4.5 4.5a2.1 2.1 0 0 1-3-3L13 13"/><path d="M9 7.5 7.5 9 3 4.5 4.5 3 9 7.5z"/>',
+  rotate:'<path d="M3 12a9 9 0 1 0 2.6-6.3L3 8"/><path d="M3 3v5h5"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>',
+  hourglass:'<path d="M6 2h12M6 22h12M7 2v4l5 5 5-5V2M7 22v-4l5-5 5 5v4"/>',
+  hand:'<path d="M11 12V5a1.5 1.5 0 0 1 3 0v5M14 10V4a1.5 1.5 0 0 1 3 0v7M17 11V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7 7.3 7.3 0 0 1-6.2-3.5L4 12.7a1.6 1.6 0 0 1 2.7-1.7L8 13V7a1.5 1.5 0 0 1 3 0"/>'
+};
+function icon(n,sz){ return '<svg class="ic" viewBox="0 0 24 24"'+(sz?' style="width:'+sz+'px;height:'+sz+'px"':'')+'>'+(IC[n]||IC.file)+'</svg>' }
 
 /* ================= state ================= */
 var DB = {enquiries:[],quotations:[],orders:[],dispatch:[],customers:[],products:[],users:[],metaLeads:[],indiamartLeads:[]};
-var DEMO = false, LAST_SYNC = null;
+var SRC_MODE = "none"; // live | local | cache | none
+var LAST_SYNC = null;
 var F = {year:(new Date()).getFullYear(), month:"", sales:"", source:""};
 
 /* ================= utils ================= */
@@ -271,7 +343,7 @@ function inrS(n){ n=N(n);
   return "₹"+Math.round(n);
 }
 function pct(a,b){return b?(100*a/b):0}
-function pd(v){ // parse many date shapes -> Date|null
+function pd(v){
   if(!v) return null;
   if(v instanceof Date) return isNaN(v)?null:v;
   var s=String(v).trim();
@@ -283,58 +355,64 @@ function toast(msg){var t=$("toast");t.textContent=msg;t.style.display="block";c
 function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
 
-/* ================= data ================= */
+/* ================= data: Sales CRM ================= */
 function unwrap(arr){return (arr||[]).map(function(x){return (x&&x.data!==undefined)?x.data:x}).filter(function(x){return x&&typeof x==="object"})}
-function fetchGetAll(url){
-  return fetch(url+(url.indexOf("?")>=0?"&":"?")+"action=getAll",{redirect:"follow"})
-    .then(function(r){return r.json()})
-    .then(function(j){return j.data||j||{}});
+function getSid(){ try{ return localStorage.getItem("crm_sid")||"" }catch(e){ return "" } }
+function gasPost(url,payload){
+  // string body => no CORS preflight; Apps Script needs redirect:follow
+  return fetch(url,{method:"POST",redirect:"follow",body:JSON.stringify(payload||{})})
+    .then(function(r){return r.json()});
+}
+function applyData(d){
+  var found=0;
+  COLLS.forEach(function(k){ if(Array.isArray(d[k])){ DB[k]=unwrap(d[k]); found++ } });
+  return found;
+}
+function readCrmLocal(){
+  // CRM app (same origin) apne synced collections localStorage me rakhta hai
+  var found=0;
+  COLLS.forEach(function(k){
+    var v=load(k,null);
+    if(Array.isArray(v)&&v.length){ DB[k]=unwrap(v); found++ }
+  });
+  return found;
+}
+function setStatus(mode){
+  SRC_MODE=mode;
+  var dot=$("syncDot"), txt=$("syncTxt"), banner=$("loginBanner");
+  banner.classList.remove("show");
+  if(mode==="live"){ dot.className="dot"; txt.textContent="Live · CRM synced" }
+  else if(mode==="local"){ dot.className="dot"; txt.textContent="Live · CRM data (this browser)" }
+  else if(mode==="cache"){ dot.className="dot warn"; txt.textContent="Cached data" }
+  else { dot.className="dot off"; txt.textContent="CRM not connected"; banner.classList.add("show") }
 }
 function pullCRM(){
-  $("syncTxt").textContent="Syncing…"; $("syncDot").className="dot demo";
-  return fetchGetAll(CRM_URL).then(function(d){
-    Object.keys(DB).forEach(function(k){ if(Array.isArray(d[k])) DB[k]=unwrap(d[k]); });
-    DEMO=false; LAST_SYNC=new Date();
-    $("syncDot").className="dot"; $("syncTxt").textContent="Live · CRM connected";
-    store("md_cache",{t:Date.now(),db:DB});
-  }).catch(function(e){
-    console.warn("CRM pull failed",e);
+  $("syncTxt").textContent="Syncing…"; $("syncDot").className="dot warn";
+  var sid=getSid();
+  var payload={action:"getAll"}; if(sid) payload.sid=sid;
+  return gasPost(CRM_URL,payload).then(function(j){
+    if(j && typeof j.newSid==="string" && j.newSid.indexOf(".")>0){ try{localStorage.setItem("crm_sid",j.newSid)}catch(e){} }
+    var d=(j&&j.data)||j||{};
+    var found=applyData(d);
+    if(found>0){
+      LAST_SYNC=new Date(); setStatus("live");
+      store("md_cache",{t:Date.now(),db:DB});
+      return;
+    }
+    fallback(); // server ne data nahi diya (login chahiye) -> local CRM cache
+  }).catch(function(e){ console.warn("CRM pull failed",e); fallback(); });
+  function fallback(){
+    if(readCrmLocal()>0){ LAST_SYNC=new Date(); setStatus("local"); store("md_cache",{t:Date.now(),db:DB}); return }
     var c=load("md_cache",null);
-    if(c&&c.db){ DB=c.db; LAST_SYNC=new Date(c.t); DEMO=false;
-      $("syncDot").className="dot demo"; $("syncTxt").textContent="Offline · cached data"; }
-    else { makeDemo(); DEMO=true;
-      $("syncDot").className="dot demo"; $("syncTxt").textContent="Demo data (backend unreachable)"; }
-  });
-}
-function makeDemo(){
-  var sp=["Kumar Goyal","Ravi Sharma","Priya Mehta","Amit Verma","Neha Jain"];
-  var src=["Existing Business","IndiaMART","Meta Ads","Website","Referral"];
-  var cust=["Essell Cables","Tezrapace Ltd","Zeba Industries","Levqora Decor","Shreeji Traders","Omkar Furnishers","BlueOak Interiors","Vastra Homes"];
-  var prod=["Wooden Console","Luxe Dining Set","Bar Cabinet","Accent Chair","Center Table","Bookshelf"];
-  var now=new Date(), E=[],O=[],Q=[];
-  for(var i=0;i<460;i++){
-    var d=new Date(now.getFullYear(),now.getMonth(),1); d.setDate(1); d.setMonth(d.getMonth()-Math.floor(Math.random()*14)); d.setDate(1+Math.floor(Math.random()*27));
-    var st=STAGES[[0,0,1,1,2,2,2,3,3,4,5,5][Math.floor(Math.random()*12)]];
-    var val=Math.round((20000+Math.random()*900000)/1000)*1000;
-    var e={id:"ENQ-"+(1000+i),date:d.toISOString().slice(0,10),customer:cust[i%cust.length],product:prod[i%prod.length],qty:1+(i%5),
-      source:src[Math.floor(Math.random()*src.length)],salesperson:sp[Math.floor(Math.random()*sp.length)],value:val,stage:st,priority:["Low","Medium","High"][i%3]};
-    E.push(e);
-    if(st==="Quoted"||st==="Won") Q.push({id:"QT-"+(2000+i),date:e.date,customer:e.customer,amount:Math.round(val*0.95),salesperson:e.salesperson,status:st==="Won"?"Accepted":"Sent",validTill:e.date});
-    if(st==="Won") O.push({id:"ORD-"+(3000+i),date:e.date,customer:e.customer,salesperson:e.salesperson,product:e.product,qty:e.qty,amount:Math.round(val*0.95),
-      payment:["Advance","Partial","Pending"][i%3],status:OSTATS[Math.floor(Math.random()*5)],expDispatch:e.date});
+    if(c&&c.db&&(c.db.enquiries||[]).length){ DB=c.db; LAST_SYNC=new Date(c.t); setStatus("cache"); return }
+    setStatus("none");
   }
-  DB.enquiries=E; DB.quotations=Q; DB.orders=O;
-  DB.metaLeads=E.slice(0,70).map(function(e,i){return {created_time:e.date,platform:i%2?"fb":"ig",lead_status:["QUALIFIED","NOT_QUALIFIED","CALL_NOT_PICK",""][i%4],assigned_to:e.salesperson}});
-  DB.indiamartLeads=E.slice(0,45).map(function(e,i){return {date:e.date,lead_status:["QUALIFIED","",""][i%3],assigned_to:e.salesperson}});
-  DB.customers=cust.map(function(c,i){return {id:"C"+i,name:c,city:"Jaipur",type:i%2?"Enterprise":"SMB"}});
-  DB.users=sp.map(function(s){return {name:s,email:s.toLowerCase().replace(/ /g,".")+"@oakcraft.in",status:"active"}});
-  LAST_SYNC=new Date();
 }
 
 /* ================= filtering ================= */
 function rowDate(r){return pd(r.date||r.createdAt||r.created_time||r.created)||null}
 function inPeriod(r){
-  var d=rowDate(r); if(!d) return F.month===""; // undated rows only show in "all months"
+  var d=rowDate(r); if(!d) return F.month==="";
   if(d.getFullYear()!==+F.year) return false;
   if(F.month!=="" && d.getMonth()!==+F.month) return false;
   return true;
@@ -345,9 +423,7 @@ function fEnq(){ return DB.enquiries.filter(inPeriod).filter(bySales).filter(byS
 function fOrd(){ return DB.orders.filter(inPeriod).filter(bySales) }
 
 /* ================= KPI ================= */
-function monthRevenue(y,m){ // Won enquiry value in a given month
-  var s=0; DB.enquiries.forEach(function(e){ if(e.stage!=="Won")return; var d=rowDate(e); if(d&&d.getFullYear()===y&&d.getMonth()===m) s+=N(e.value) }); return s;
-}
+function monthRevenue(y,m){ var s=0; DB.enquiries.forEach(function(e){ if(e.stage!=="Won")return; var d=rowDate(e); if(d&&d.getFullYear()===y&&d.getMonth()===m) s+=N(e.value) }); return s }
 function monthWonCount(y,m){ var c=0; DB.enquiries.forEach(function(e){ if(e.stage!=="Won")return; var d=rowDate(e); if(d&&d.getFullYear()===y&&d.getMonth()===m) c++ }); return c }
 function kpiData(){
   var E=fEnq(), O=fOrd();
@@ -367,33 +443,32 @@ function kpiData(){
   var wonRev=0; E.forEach(function(e){ if(e.stage==="Won") wonRev+=N(e.value) });
   var pipeVal=0; E.forEach(function(e){ if(e.stage!=="Won"&&e.stage!=="Lost") pipeVal+=N(e.value) });
   return [
-    {l:"Deals in Pipeline", v:pipeline, ic:"🧩", t:"var(--tint1)", sub:"value "+inrS(pipeVal)},
-    {l:"Revenue This Month", v:inrS(revT), ic:"₹", t:"var(--tint4)",
-      sub:"last month "+inrS(revL), delta:dl},
-    {l:"Deals Won", v:by.Won, ic:"🤝", t:"var(--tint3)", sub:"revenue "+inrS(wonRev)},
-    {l:"Deals Lost", v:by.Lost, ic:"✖", t:"var(--tint4)", sub:pct(by.Lost,by.Won+by.Lost).toFixed(0)+"% of closed"},
-    {l:"Negotiation (Quoted)", v:by.Quoted, ic:"📄", t:"var(--tint3)", sub:"quotes awaiting decision"},
-    {l:"Pending for Quotation", v:by.Qualified, ic:"🧾", t:"var(--tint2)", sub:"qualified, not yet quoted"},
-    {l:"Pending PO", v:pendPO, ic:"📋", t:"var(--tint5)", sub:"quotations sent"},
-    {l:"Follow-up (Contacted)", v:by.Contacted, ic:"📞", t:"var(--tint1)", sub:"in conversation"},
-    {l:"New Enquiries", v:by.New, ic:"✉️", t:"var(--tint3)", sub:"untouched this period"},
-    {l:"Leads in Pipeline", v:leads.length, ic:"👥", t:"var(--tint1)", sub:"Meta + IndiaMART"},
-    {l:"Contact Not Established", v:unq, ic:"🚫", t:"var(--tint5)", sub:"no status / call not picked"},
-    {l:"Open Orders", v:openOrd.length, ic:"🏭", t:"var(--tint2)", sub:"value "+inrS(openOrd.reduce(function(s,o){return s+N(o.amount)},0))},
-    {l:"Payment Pending", v:payPend.length, ic:"⏳", t:"var(--tint4)", sub:inrS(payPend.reduce(function(s,o){return s+N(o.amount)},0))+" receivable"},
-    {l:"Quotations Open", v:pendQ, ic:"🗂️", t:"var(--tintn)", sub:"draft + sent"}
+    {l:"Deals in Pipeline", v:pipeline, ic:"layers", t:"var(--tint1)", c:"var(--s1)", sub:"value "+inrS(pipeVal)},
+    {l:"Revenue This Month", v:inrS(revT), ic:"rupee", t:"var(--tint4)", c:"var(--crit)", sub:"last month "+inrS(revL), delta:dl},
+    {l:"Deals Won", v:by.Won, ic:"trophy", t:"var(--tint3)", c:"var(--s3)", sub:"revenue "+inrS(wonRev)},
+    {l:"Deals Lost", v:by.Lost, ic:"x", t:"var(--tint4)", c:"var(--crit)", sub:pct(by.Lost,by.Won+by.Lost).toFixed(0)+"% of closed"},
+    {l:"Negotiation (Quoted)", v:by.Quoted, ic:"file", t:"var(--tint3)", c:"var(--s3)", sub:"quotes awaiting decision"},
+    {l:"Pending for Quotation", v:by.Qualified, ic:"clip", t:"var(--tint2)", c:"var(--s2)", sub:"qualified, not yet quoted"},
+    {l:"Pending PO", v:pendPO, ic:"clip", t:"var(--tint5)", c:"var(--warn)", sub:"quotations sent"},
+    {l:"Follow-up (Contacted)", v:by.Contacted, ic:"phone", t:"var(--tint1)", c:"var(--s1)", sub:"in conversation"},
+    {l:"New Enquiries", v:by.New, ic:"mail", t:"var(--tint3)", c:"var(--s3)", sub:"untouched this period"},
+    {l:"Leads in Pipeline", v:leads.length, ic:"users", t:"var(--tint1)", c:"var(--s1)", sub:"Meta + IndiaMART"},
+    {l:"Contact Not Established", v:unq, ic:"slash", t:"var(--tint5)", c:"var(--warn)", sub:"no status / call not picked"},
+    {l:"Open Orders", v:openOrd.length, ic:"factory", t:"var(--tint2)", c:"var(--s2)", sub:"value "+inrS(openOrd.reduce(function(s,o){return s+N(o.amount)},0))},
+    {l:"Payment Pending", v:payPend.length, ic:"hourglass", t:"var(--tint4)", c:"var(--crit)", sub:inrS(payPend.reduce(function(s,o){return s+N(o.amount)},0))+" receivable"},
+    {l:"Quotations Open", v:pendQ, ic:"folder", t:"var(--tintn)", c:"var(--ink2)", sub:"draft + sent"}
   ];
 }
 function paintKPIs(){
   $("kpis").innerHTML = kpiData().map(function(k){
     var d = (k.delta===undefined)?"":(' <span class="delta '+(k.delta>=0?"up":"down")+'">'+(k.delta>=0?"▲":"▼")+" "+Math.abs(k.delta).toFixed(1)+"%</span>");
-    return '<div class="tile"><div class="ic" style="background:'+k.t+'">'+k.ic+'</div><div>'+
-      '<div class="lbl">'+esc(k.l)+'</div><div class="val">'+k.v+d+'</div>'+
-      (k.sub?'<div class="sub">'+esc(k.sub)+'</div>':'')+'</div></div>';
+    return '<div class="tile"><div class="top"><span class="chip" style="background:'+k.t+';color:'+k.c+'">'+icon(k.ic)+'</span>'+
+      '<span class="lbl">'+esc(k.l)+'</span></div><div class="val">'+k.v+d+'</div>'+
+      (k.sub?'<div class="sub">'+esc(k.sub)+'</div>':'')+'</div>';
   }).join("");
 }
 
-/* ================= charts (hand-built SVG) ================= */
+/* ================= charts ================= */
 var tipEl=null;
 function tip(host,html,x,y){
   if(!tipEl){tipEl=document.createElement("div");tipEl.className="tip";document.body.appendChild(tipEl)}
@@ -427,7 +502,6 @@ function chartRevenue(){
     s+='<text x="'+(padL+i*bw+bw/2)+'" y="'+(H-10)+'" text-anchor="middle">'+MONTHS[p.m]+(p.m===0?"'"+String(p.y).slice(2):"")+'</text>';
     if(i===pts.length-1||p.rev===max) s+='<text class="dl" x="'+(padL+i*bw+bw/2)+'" y="'+(y-6)+'" text-anchor="middle">'+inrS(p.rev)+'</text>';
   });
-  // deals-won line
   var wmax=Math.max.apply(null,pts.map(function(p){return p.won}).concat([1]));
   var line=pts.map(function(p,i){ return (i?"L":"M")+(padL+i*bw+bw/2)+" "+(padT+ih-p.won/wmax*ih*0.85) }).join(" ");
   s+='<path d="'+line+'" fill="none" stroke="var(--s3)" stroke-width="2"/>';
@@ -444,7 +518,6 @@ function chartRevenue(){
 }
 
 function hbars(host,rows,color,fmt,aria){
-  // rows: [{name, val, sub}] — color: fixed per-entity css color or fn(i)
   var max=Math.max.apply(null,rows.map(function(r){return r.val}).concat([1]));
   host.innerHTML = (rows.length?"":'<div class="hint">No data in this period</div>')+rows.map(function(r,i){
     var c=(typeof color==="function")?color(r,i):color;
@@ -526,7 +599,7 @@ function csvMIS(){
   var blob=new Blob([lines.join("\n")],{type:"text/csv"});
   var a=document.createElement("a"); a.href=URL.createObjectURL(blob);
   a.download="Oakcraft-MIS-"+F.year+(F.month!==""?"-"+MONTHS[+F.month]:"")+".csv"; a.click();
-  toast("MIS report downloaded ✓");
+  toast("MIS report downloaded");
 }
 
 /* ================= alerts ================= */
@@ -536,63 +609,97 @@ function paintAlerts(){
   var stale=DB.enquiries.filter(function(e){ if(["Won","Lost"].indexOf(e.stage)>=0) return false;
     var d=rowDate(e); return d&&daysAgo(d)>14 });
   stale.sort(function(a,b){return N(b.value)-N(a.value)});
-  if(stale.length) out.push({t:"🕰️ Stale pipeline deals",c:"var(--tint5)",
+  if(stale.length) out.push({t:"Stale pipeline deals",ic:"clock",b:"var(--warn)",
     d:stale.length+" open deals older than 14 days (top: "+esc(stale[0].customer||"?")+" · "+inrS(N(stale[0].value))+"). Worth "+inrS(stale.reduce(function(s,e){return s+N(e.value)},0))+" in total."});
   var unassigned=DB.metaLeads.concat(DB.indiamartLeads).filter(function(l){return !(l.owner||l.assigned_to)});
-  if(unassigned.length) out.push({t:"👤 Unassigned leads",c:"var(--tint4)",
+  if(unassigned.length) out.push({t:"Unassigned leads",ic:"users",b:"var(--crit)",
     d:unassigned.length+" Meta/IndiaMART leads have no owner — assign them so follow-up starts."});
   var pay=DB.orders.filter(function(o){return String(o.payment||"").toLowerCase().indexOf("pend")>=0&&o.status!=="Cancelled"});
-  if(pay.length) out.push({t:"💸 Payments to collect",c:"var(--tint4)",
+  if(pay.length) out.push({t:"Payments to collect",ic:"wallet",b:"var(--crit)",
     d:pay.length+" orders with payment pending — "+inrS(pay.reduce(function(s,o){return s+N(o.amount)},0))+" receivable."});
   var late=DB.orders.filter(function(o){ if(["Delivered","Cancelled"].indexOf(o.status)>=0) return false;
     var d=pd(o.expDispatch); return d&&d<new Date() });
-  if(late.length) out.push({t:"🚚 Dispatch overdue",c:"var(--tint2)",
-    d:late.length+" open orders past their expected dispatch date — production team ko push karein."});
+  if(late.length) out.push({t:"Dispatch overdue",ic:"truck",b:"var(--serious)",
+    d:late.length+" open orders past their expected dispatch date — production team needs a push."});
   var hot=DB.enquiries.filter(function(e){return e.stage==="Quoted"&&N(e.value)>0}).sort(function(a,b){return N(b.value)-N(a.value)}).slice(0,3);
-  if(hot.length) out.push({t:"🔥 Biggest quotes on the table",c:"var(--tint3)",
-    d:hot.map(function(e){return esc(e.customer||"?")+" ("+inrS(N(e.value))+")"}).join(" · ")+" — ek call close kara sakti hai."});
+  if(hot.length) out.push({t:"Biggest quotes on the table",ic:"hand",b:"var(--good)",
+    d:hot.map(function(e){return esc(e.customer||"?")+" ("+inrS(N(e.value))+")"}).join(" · ")+" — one call could close these."});
   $("alerts").innerHTML = out.length?out.map(function(a){
-    return '<div class="card" style="background:'+a.c+'"><h3>'+a.t+'</h3><div style="font-size:12.8px;color:var(--ink2);margin-top:6px">'+a.d+'</div></div>';
-  }).join(""):'<div class="card"><div class="hint">Sab clear — koi urgent item nahi. 🎉</div></div>';
+    return '<div class="alert" style="border-left-color:'+a.b+'"><h3><span style="color:'+a.b+'">'+icon(a.ic)+'</span>'+esc(a.t)+'</h3><p>'+a.d+'</p></div>';
+  }).join(""):'<div class="alert" style="border-left-color:var(--good)"><h3><span style="color:var(--good)">'+icon("trophy")+'</span>All clear</h3><p>No urgent items right now.</p></div>';
 }
 
 /* ================= modules ================= */
 function modConns(){ return load("md_conns",{}) }
+function modUrl(m){ var c=modConns()[m.id]; return (c&&c.url)||m.url||"" }
+function modCounts(){ return load("md_modcounts",{}) }
 function paintModules(){
-  var conns=modConns();
+  var counts=modCounts();
   $("mods").innerHTML = MODULES.map(function(m){
     var url="https://weboakcraft.github.io/"+m.repo+"/";
-    var st;
-    if(m.builtin) st = DEMO ? "Demo data shown" : (DB.enquiries.length+" enquiries · "+DB.orders.length+" orders · "+DB.customers.length+" customers");
-    else if(conns[m.id]&&conns[m.id].counts) st = conns[m.id].counts;
-    else if(conns[m.id]&&conns[m.id].url) st = "Connected · syncing…";
-    else st = "Not connected — live counts ke liye Settings me endpoint jodein";
-    return '<div class="mod"><div class="top"><div class="mi" style="background:'+m.tint+'">'+m.emoji+
-      '</div><div><b>'+esc(m.name)+'</b><div class="cat">'+esc(m.cat)+'</div></div></div>'+
-      '<div class="st">'+esc(st)+'</div>'+
-      '<div class="acts"><a class="pill" href="'+url+'" target="_blank" rel="noopener">Open app ↗</a>'+
-      '<a class="pill" href="https://github.com/Weboakcraft/'+m.repo+'" target="_blank" rel="noopener">Code</a></div></div>';
+    var st, dim="";
+    if(m.builtin){
+      st = SRC_MODE==="none" ? "Waiting for CRM login" :
+        DB.enquiries.length+" enquiries · "+DB.orders.length+" orders · "+DB.quotations.length+" quotations";
+    }
+    else if(counts[m.id]&&counts[m.id].txt){ st=counts[m.id].txt; dim=counts[m.id].ok?"":" dim" }
+    else if(modUrl(m)){ st="Checking live data…"; dim=" dim" }
+    else { st="App link only (no public data API)"; dim=" dim" }
+    return '<div class="mod"><div class="top"><span class="mi" style="background:'+m.tint+';color:'+m.color+'">'+icon(m.icon)+
+      '</span><div><b>'+esc(m.name)+'</b><div class="cat">'+esc(m.cat)+'</div></div></div>'+
+      '<div class="st'+dim+'">'+esc(st)+'</div>'+
+      '<div class="acts"><a class="mbtn pri" href="'+url+'" target="_blank" rel="noopener">Open app</a>'+
+      '<a class="mbtn" href="https://github.com/Weboakcraft/'+m.repo+'" target="_blank" rel="noopener">Code</a></div></div>';
   }).join("");
 }
-function pullModules(){
-  var conns=modConns(), changed=false, waits=[];
+function probeModule(m){
+  // generic probe: POST getAll (kai apps same backend pattern use karte hain), warna plain GET
+  var url=modUrl(m); if(!url) return Promise.resolve();
+  var sid=getSid();
+  function summarize(j){
+    var d=(j&&j.data)||j||{};
+    var parts=[];
+    Object.keys(d).forEach(function(k){
+      if(Array.isArray(d[k])&&d[k].length&&["users","formfields","permissions","apiconfig","logs"].indexOf(k)<0)
+        parts.push(d[k].length+" "+k);
+    });
+    if(!parts.length&&Array.isArray(j)&&j.length) parts.push(j.length+" records");
+    return parts.slice(0,3).join(" · ");
+  }
+  return gasPost(url,sid?{action:"getAll",sid:sid}:{action:"getAll"}).then(function(j){
+    var txt=summarize(j);
+    return txt?{ok:1,txt:txt}:fetch(url,{redirect:"follow"}).then(function(r){return r.json()}).then(function(j2){
+      var t2=summarize(j2); return t2?{ok:1,txt:t2}:{ok:0,txt:"Connected · app login required for data"};
+    }).catch(function(){ return {ok:0,txt:"Connected · app login required for data"} });
+  }).catch(function(){ return {ok:0,txt:"Backend unreachable"} });
+}
+function pullModules(force){
+  var counts=modCounts(), now=Date.now(), queue=[];
   MODULES.forEach(function(m){
-    if(m.builtin||!conns[m.id]||!conns[m.id].url) return;
-    waits.push(fetchGetAll(conns[m.id].url).then(function(d){
-      var parts=[]; Object.keys(d).forEach(function(k){
-        if(Array.isArray(d[k])&&d[k].length&&["users","formfields","permissions","apiconfig"].indexOf(k)<0) parts.push(d[k].length+" "+k) });
-      conns[m.id].counts = parts.slice(0,3).join(" · ")||"Connected · no records";
-      changed=true;
-    }).catch(function(){ conns[m.id].counts="⚠ Endpoint unreachable"; changed=true }));
+    if(m.builtin||!modUrl(m)) return;
+    var c=counts[m.id];
+    if(!force&&c&&c.t&&now-c.t<10*60*1000) return; // 10 min cache
+    queue.push(m);
   });
-  if(waits.length) Promise.all(waits).then(function(){ if(changed){store("md_conns",conns);paintModules()} });
+  if(!queue.length){ paintModules(); return }
+  var i=0;
+  function next(){
+    if(i>=queue.length){ store("md_modcounts",counts); paintModules(); return }
+    var m=queue[i++];
+    probeModule(m).then(function(res){
+      if(res){ counts[m.id]={t:Date.now(),ok:res.ok,txt:res.txt}; store("md_modcounts",counts); paintModules() }
+      setTimeout(next,350);
+    });
+  }
+  next(); if(queue.length>1){ setTimeout(next,200) } // 2 parallel lanes
 }
 
 /* ================= settings modal ================= */
 function openSettings(){
   var conns=modConns();
   $("connList").innerHTML = MODULES.filter(function(m){return !m.builtin}).map(function(m){
-    return '<label>'+esc(m.name)+'</label><input data-mod="'+m.id+'" placeholder="https://script.google.com/macros/s/…/exec" value="'+esc((conns[m.id]||{}).url||"")+'">';
+    var cur=(conns[m.id]||{}).url||"";
+    return '<label>'+esc(m.name)+(m.url?' · default wired':'')+'</label><input data-mod="'+m.id+'" placeholder="'+esc(m.url||"https://script.google.com/macros/s/…/exec")+'" value="'+esc(cur)+'">';
   }).join("");
   $("modal").classList.add("open");
 }
@@ -601,8 +708,9 @@ function saveSettings(){
   $("connList").querySelectorAll("input[data-mod]").forEach(function(i){
     var v=i.value.trim(); if(v) conns[i.getAttribute("data-mod")]={url:v};
   });
-  store("md_conns",conns); $("modal").classList.remove("open");
-  paintModules(); pullModules(); toast("Connections saved");
+  store("md_conns",conns); store("md_modcounts",{});
+  $("modal").classList.remove("open");
+  paintModules(); pullModules(true); toast("Connections saved");
 }
 
 /* ================= filters & paint-all ================= */
@@ -613,9 +721,9 @@ function buildFilters(){
   if(yl.indexOf(F.year)<0) F.year=yl[0];
   $("fYear").innerHTML=yl.map(function(y){return '<option '+(y===F.year?"selected":"")+'>'+y+'</option>'}).join("");
   $("fMonth").innerHTML='<option value="">All months</option>'+MONTHS.map(function(m,i){return '<option value="'+i+'" '+(String(i)===String(F.month)?"selected":"")+'>'+m+'</option>'}).join("");
-  var sp={}; DB.enquiries.forEach(function(e){ if(e.salesperson) sp[e.salesperson.trim()]=1 });
+  var sp={}; DB.enquiries.forEach(function(e){ if(e.salesperson) sp[String(e.salesperson).trim()]=1 });
   $("fSales").innerHTML='<option value="">All salespersons</option>'+Object.keys(sp).sort().map(function(s){return '<option '+(s===F.sales?"selected":"")+'>'+esc(s)+'</option>'}).join("");
-  var so={}; DB.enquiries.forEach(function(e){ if(e.source) so[e.source.trim()]=1 });
+  var so={}; DB.enquiries.forEach(function(e){ if(e.source) so[String(e.source).trim()]=1 });
   $("fSource").innerHTML='<option value="">All sources</option>'+Object.keys(so).sort().map(function(s){return '<option '+(s===F.source?"selected":"")+'>'+esc(s)+'</option>'}).join("");
 }
 function paintAll(){
@@ -623,8 +731,8 @@ function paintAll(){
   paintKPIs(); chartRevenue(); chartFunnel(); chartSources(); chartSalespersons(); chartOrders();
   paintMIS(); paintAlerts(); paintModules();
   $("trendNote").textContent = F.year+(F.month!==""?" · "+MONTHS[+F.month]:"")+(F.sales?" · "+F.sales:"");
-  $("pulse").innerHTML = "⚡ "+DB.enquiries.length+" enquiries · "+DB.orders.length+" orders · "+
-    DB.metaLeads.length+" meta · "+DB.indiamartLeads.length+" IndiaMART"+
+  $("pulse").textContent = DB.enquiries.length+" enquiries · "+DB.orders.length+" orders · "+
+    DB.metaLeads.length+" Meta · "+DB.indiamartLeads.length+" IndiaMART"+
     (LAST_SYNC?" · synced "+LAST_SYNC.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}):"");
 }
 function refresh(){ pullCRM().then(function(){ paintAll(); pullModules() }) }
@@ -639,7 +747,7 @@ function refresh(){ pullCRM().then(function(){ paintAll(); pullModules() }) }
     var next=dark?"light":"dark";
     document.documentElement.setAttribute("data-theme",next); store("md_theme",next); paintAll();
   };
-  $("btnRefresh").onclick=function(){ toast("Refreshing…"); refresh() };
+  $("btnRefresh").onclick=function(){ toast("Refreshing…"); store("md_modcounts",{}); refresh() };
   $("btnSettings").onclick=openSettings;
   $("mClose").onclick=function(){$("modal").classList.remove("open")};
   $("mSave").onclick=saveSettings;
@@ -649,11 +757,11 @@ function refresh(){ pullCRM().then(function(){ paintAll(); pullModules() }) }
   $("fMonth").onchange=function(){F.month=this.value;paintAll()};
   $("fSales").onchange=function(){F.sales=this.value;paintAll()};
   $("fSource").onchange=function(){F.source=this.value;paintAll()};
-  // first paint from cache for instant load, then live
-  var c=load("md_cache",null);
-  if(c&&c.db){ DB=c.db; LAST_SYNC=new Date(c.t); paintAll(); }
+  // instant paint: pehle CRM local -> cache, phir live pull
+  if(readCrmLocal()>0){ LAST_SYNC=new Date(); setStatus("local"); paintAll(); }
+  else { var c=load("md_cache",null); if(c&&c.db&&(c.db.enquiries||[]).length){ DB=c.db; LAST_SYNC=new Date(c.t); setStatus("cache"); paintAll(); } }
   refresh();
-  setInterval(refresh, 5*60*1000); // auto-refresh every 5 min
+  setInterval(refresh, 5*60*1000);
 })();
 </script>
 </body>
