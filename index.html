@@ -114,8 +114,8 @@ h2.sec:after{content:"";flex:1;height:1px;background:var(--grid)}
 .hbar{display:grid;grid-template-columns:132px 1fr 88px;gap:10px;align-items:center;padding:6px 4px;border-radius:7px}
 .hbar:hover{background:var(--tintn)}
 .hbar .nm{font-size:12.5px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hbar .tr{height:13px;background:var(--tintn);border-radius:4px;overflow:hidden}
-.hbar .fl{height:100%;border-radius:0 4px 4px 0}
+.hbar .tr{display:block;height:13px;background:var(--tintn);border-radius:4px;overflow:hidden}
+.hbar .fl{display:block;height:100%;border-radius:0 4px 4px 0}
 .hbar .vv{font-size:12px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink2)}
 
 /* ---------- table ---------- */
@@ -200,7 +200,7 @@ tr.total td{font-weight:700;background:var(--tintn);border-top:2px solid var(--a
   <div class="grid2">
     <div class="card" style="grid-column:1/-1">
       <h3>Revenue — last 12 months</h3>
-      <div class="hint">Order billing per month, excl. GST (₹). Hover for detail.</div>
+      <div class="hint">Order billing per month, excl. GST (₹). Salesperson filter applies. Hover for detail.</div>
       <div class="legend"><span><i style="background:var(--s1)"></i>Revenue (orders)</span><span><i style="background:var(--s3)"></i>Orders count</span></div>
       <div class="ch" id="chRev"></div>
     </div>
@@ -223,6 +223,25 @@ tr.total td{font-weight:700;background:var(--tintn);border-top:2px solid var(--a
       <h3>Order book status</h3>
       <div class="hint">Open orders by production status</div>
       <div class="ch" id="chOrd"></div>
+    </div>
+  </div>
+
+  <h2 class="sec">Lead Status <span class="n">enquiries · Meta · IndiaMART — filters apply</span></h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Enquiries — by status</h3>
+      <div class="hint">Direct enquiries, actual CRM stages</div>
+      <div class="ch" id="chEnqSt"></div>
+    </div>
+    <div class="card">
+      <h3>Meta Leads — by status</h3>
+      <div class="hint">Facebook / Instagram leads</div>
+      <div class="ch" id="chMetaSt"></div>
+    </div>
+    <div class="card">
+      <h3>IndiaMART Leads — by status</h3>
+      <div class="hint">IndiaMART synced leads</div>
+      <div class="ch" id="chImSt"></div>
     </div>
   </div>
 
@@ -460,9 +479,10 @@ function fEnq(){ return DB.enquiries.filter(inPeriod).filter(bySales).filter(byS
 function fOrd(){ return DB.orders.filter(inPeriod).filter(bySales) }
 
 /* ================= KPI ================= */
-/* Revenue orders se aata hai (billing) — enquiries me value field aksar khaali hai */
-function monthRevenue(y,m){ var s=0; DB.orders.forEach(function(o){ if(o.status==="Cancelled")return; var d=rowDate(o); if(d&&d.getFullYear()===y&&d.getMonth()===m) s+=N(o.amount) }); return s }
-function monthWonCount(y,m){ var c=0; DB.orders.forEach(function(o){ if(o.status==="Cancelled")return; var d=rowDate(o); if(d&&d.getFullYear()===y&&d.getMonth()===m) c++ }); return c }
+/* Revenue orders se aata hai (billing) — enquiries me value field aksar khaali hai.
+   Salesperson filter yahan bhi lagta hai: All = sabka, user select = sirf uska. */
+function monthRevenue(y,m){ var s=0; DB.orders.filter(bySales).forEach(function(o){ if(o.status==="Cancelled")return; var d=rowDate(o); if(d&&d.getFullYear()===y&&d.getMonth()===m) s+=N(o.amount) }); return s }
+function monthWonCount(y,m){ var c=0; DB.orders.filter(bySales).forEach(function(o){ if(o.status==="Cancelled")return; var d=rowDate(o); if(d&&d.getFullYear()===y&&d.getMonth()===m) c++ }); return c }
 function kpiData(){
   var E=fEnq(), O=fOrd();
   var by={won:0,lost:0,notq:0,nocontact:0,quoted:0,qualified:0,contacted:0,"new":0};
@@ -487,7 +507,7 @@ function kpiData(){
   var unq=leads.filter(function(l){var s=String(l.lead_status||"").toUpperCase();return !s||s==="CALL_NOT_PICK"||s==="CREATED"}).length;
   return [
     {l:"Deals in Pipeline", v:pipeline, ic:"layers", t:"var(--tint1)", c:"var(--s1)", sub:pipeVal>0?"value "+inrS(pipeVal):"active (not won/lost/disqualified)"},
-    {l:"Revenue This Month", v:inrS(revT), ic:"rupee", t:"var(--tint4)", c:"var(--crit)", sub:"orders billed · last month "+inrS(revL), delta:dl},
+    {l:"Revenue This Month", v:inrS(revT), ic:"rupee", t:"var(--tint4)", c:"var(--crit)", sub:"incl. 18% GST "+inrS(revT*1.18)+" · last month "+inrS(revL), delta:dl},
     {l:"Deals Won", v:by.won, ic:"trophy", t:"var(--tint3)", c:"var(--s3)", sub:"order value "+inrS(ordRev)+" (period)"},
     {l:"Deals Lost", v:by.lost, ic:"x", t:"var(--tint4)", c:"var(--crit)", sub:pct(by.lost,by.won+by.lost).toFixed(0)+"% of closed"},
     {l:"Negotiation / Quotation Sent", v:by.quoted, ic:"file", t:"var(--tint3)", c:"var(--s3)", sub:"quotes & proposals awaiting decision"},
@@ -615,6 +635,31 @@ function chartOrders(){
   var rows=OSTATS.filter(function(s){return by[s]}).concat(Object.keys(by).filter(function(s){return OSTATS.indexOf(s)<0}))
     .map(function(s){return {name:s,val:by[s]||0,tipk:"Orders",c:ramp[s]||"var(--muted)"}});
   hbars($("chOrd"),rows,function(r){return r.c},function(r){return String(r.val)},"Order status");
+}
+
+/* ================= lead status cards ================= */
+function statusColor(s){
+  var u=String(s).toUpperCase();
+  if(/WON|QUALIF/.test(u)&&!/NOT/.test(u)) return "var(--good)";
+  if(/NOT[_ ]QUALIF|LOST|REJECT/.test(u)) return "var(--crit)";
+  if(/CALL[_ ]NOT[_ ]PICK|NOT PICK|NO RESPONSE/.test(u)) return "var(--warn)";
+  if(/QUOT|PROPOSAL|NEGOTI/.test(u)) return "var(--seq550)";
+  if(/CONTACT|FOLLOW|MEETING/.test(u)) return "var(--seq400)";
+  return "var(--seq300)";
+}
+function statusRows(list,field){
+  var cnt={};
+  list.forEach(function(r){
+    var s=String(r[field]||r.lead_status||r.stage||r.status||"").trim()||"New / No status";
+    cnt[s]=(cnt[s]||0)+1;
+  });
+  return Object.keys(cnt).map(function(k){return {name:k,val:cnt[k],tipk:"Leads",c:statusColor(k)}})
+    .sort(function(a,b){return b.val-a.val}).slice(0,9);
+}
+function chartLeadStatus(){
+  hbars($("chEnqSt"), statusRows(fEnq(),"stage"), function(r){return r.c}, function(r){return String(r.val)}, "Enquiry status");
+  hbars($("chMetaSt"), statusRows(DB.metaLeads.filter(inPeriod).filter(bySales),"lead_status"), function(r){return r.c}, function(r){return String(r.val)}, "Meta lead status");
+  hbars($("chImSt"), statusRows(DB.indiamartLeads.filter(inPeriod).filter(bySales),"lead_status"), function(r){return r.c}, function(r){return String(r.val)}, "IndiaMART lead status");
 }
 
 /* ================= MIS table ================= */
@@ -779,7 +824,7 @@ function buildFilters(){
 }
 function paintAll(){
   buildFilters();
-  paintKPIs(); chartRevenue(); chartFunnel(); chartSources(); chartSalespersons(); chartOrders();
+  paintKPIs(); chartRevenue(); chartFunnel(); chartSources(); chartSalespersons(); chartOrders(); chartLeadStatus();
   paintMIS(); paintAlerts(); paintModules();
   $("trendNote").textContent = F.year+(F.month!==""?" · "+MONTHS[+F.month]:"")+(F.sales?" · "+F.sales:"");
   $("pulse").textContent = DB.enquiries.length+" enquiries · "+DB.orders.length+" orders · "+
