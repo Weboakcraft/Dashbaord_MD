@@ -2,7 +2,7 @@
 
 Managing Director ke liye ek single-file master dashboard — poore Oakcraft business ka live view, ek hi page par.
 
-**Live URL (GitHub Pages enable karne ke baad):** `https://mrgoswami98.github.io/Media_app/`
+**Live URL (GitHub Pages enable karne ke baad):** `https://weboakcraft.github.io/Dashbaord_MD/`
 
 ## Kya dikhata hai
 
